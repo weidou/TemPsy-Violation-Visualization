@@ -1,0 +1,71 @@
+<div class="pageWrapper container">
+  <aside class="sidebar">
+    <div class="top-pagination clearfix">
+      <dir-pagination-controls max-size="5" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+    </div>
+    <div dir-paginate="segment in segments | itemsPerPage: perPage" current-page="page" total-items="violationsCount">
+      <button ng-click="toggleSegmentGuide($event, segment.segmentIndex)" class="btn btn-yellow">Segment: [ {{segment.scopeBegin}} - {{segment.scopeEnd}} ]</button>
+      <div ng-if="orderPattern" class="list-group">
+        <div ng-repeat="violation in segment.violations" class="list-group-item">
+          <a href="#" ng-click="plotViolation(segment, $index)" class="plot-link">
+            Violation {{segment.globalStartIndex + $index + 1}}
+          </a>
+          <span> - {{violation.type}}</span>
+          <p>Pattern: {{patternType}}</p>
+          <p>Relevant events:</p>
+          <ul>
+            <li ng-if="violation.cause.length > 0">
+              Cause:
+            </li>
+            <ul>
+              <li ng-repeat="causeItem in violation.cause">
+                {{pattern.cause[$index%pattern.cause.length].event}}#{{causeItem}}
+              </li>
+            </ul>
+            <li ng-if="violation.effect.length > 0">
+              Effect:
+            </li>
+            <ul>
+              <li ng-repeat="effectItem in violation.effect">
+                {{pattern.effect[$index%pattern.effect.length].event}}#{{effectItem}}
+              </li>
+            </ul>
+          </ul>
+        </div>
+      </div>
+      <div ng-if="universalityPattern" class="list-group">
+        <div ng-repeat="violation in segment.violations" class="list-group-item">
+          <a href="#" ng-click="plotViolation(segment, $index)" class="plot-link">
+            Violation {{segment.globalStartIndex + $index + 1}}
+          </a>
+          <span> - {{segment.violationType}}</span>
+          <p>Pattern: {{patternType}}</p>
+          <p>Related event: {{violation.event}}#{{violation.index}}</p>
+        </div>
+      </div>
+      <div ng-if="occurrencePattern" class="list-group">
+        <div ng-if="segment.violations.length === 0" class="list-group-item">
+          <a href="#" ng-click="plotViolation(segment, 0)" class="plot-link">
+            Violation {{segment.globalStartIndex + 1}}
+          </a>
+          <span> - {{segment.violationType}}</span>
+        </div>
+        <div ng-repeat="violation in segment.violations" class="list-group-item">
+          <a href="#" ng-click="plotViolation(segment, $index)" class="plot-link">
+            Violation {{segment.globalStartIndex + $index + 1}}
+          </a>
+          <span> - {{segment.violationType}}</span>
+          <p>Pattern: {{patternType}}</p>
+          <p>Related event: {{pattern.event}}#{{violation}}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="content">
+    <div ng-bind-html="property.str | highlightProperty: highlightedPhrases" class="property"></div>
+    <button ng-click="toggleSegmentsGuide($event)" class="toggleGuide btn btn-yellow">{{toggleSegmentsLabel}}</button>
+    <button ng-if="isRedGuideVisible" ng-click="toggleRedGuide($event)" class="toggleGuide btn">violated temporal bound</button>
+    <button ng-if="isGreenGuideVisible" ng-click="toggleGreenGuide($event)" class="toggleGuide btn">correct temporal bound</button>
+    <div id="plot" class="plot"></div>
+  </div>
+</div>

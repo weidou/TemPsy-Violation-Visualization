@@ -1,0 +1,20 @@
+<div class="container">
+  <section id="reports">
+    <h1 class="page-header">Violation Report List</h1>
+    <p class="text-muted">
+      <input type="search" id="searchString" class="form-control search-box" ng-model="search" placeholder="Type trace name or property name...">
+      {{reportsCount.count}} reports
+    </p>
+    <div class="list-group">
+      <div dir-paginate="report in reports | itemsPerPage: perPage" total-items="reportsCount.count" class="list-group-item">
+        <p class="pull-right">
+          <a href="/reports/{{report._id._str}}" class="text-link">Show details</a>
+          <button ng-click="remove(report)" class="btn btn-danger remove-report ">Remove</button>
+        </p>
+        <h4>trace: {{report.trace}}, property: {{report.property}}</h4>
+        <p class="list-group-item-text text-muted">violation number: {{number(report.violationsList)}}</p>
+      </div>
+    </div>
+  </section>
+  <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+</div>

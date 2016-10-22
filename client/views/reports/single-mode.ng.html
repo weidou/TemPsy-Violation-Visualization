@@ -1,0 +1,25 @@
+<div class="pageWrapper container-fluid">
+  <aside class="sidebar">
+    <ul>
+      <li dir-paginate="violation in violations.violations | itemsPerPage: $root.perPage" current-page="$root.page" total-items="$root.violationsCount.count">
+        <h4>Violation {{violation.index}}</h4>
+        <button class="btn btn-primary" ng-click="plotViolation(violation)">Plot</button>
+        <span>Type: {{violation.type}}</span>
+        <span>Pattern: {{violation.pattern}}</span>
+        <span>Indexes:</span>
+        <ul>
+          <li ng-repeat="cause in violation.causes">
+            <button class="btn btn-default" ng-click="zoomToIndex(cause)">{{cause}}</button>
+          </li>
+          <li ng-repeat="effect in violation.effects">
+            <button class="btn btn-default" ng-click="zoomToIndex(effect)">{{effect}}</button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <dir-pagination-controls on-page-change="$root.pageChanged(newPageNumber)"></dir-pagination-controls>
+  </aside>
+  <div class="content">
+    <div id="plot" class="plot"></div>
+  </div>
+</div>
