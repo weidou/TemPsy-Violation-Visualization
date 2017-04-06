@@ -3,10 +3,10 @@ Meteor.methods({
   loadOne: function(index, start, end, size) {
     var searchData = {
       "size": size,
-      "sort": [{"index": {"order": "asc"}}],
+      "sort": [{"timestamp": {"order": "asc"}}],
       "query": {
         "range": {
-          "index": {
+          "_id": {
             "gte": start,
             "lte": end
           }
@@ -23,7 +23,7 @@ Meteor.methods({
     _.each(ranges, function (range) {
       filters.push({
         "range": {
-          "index": {
+          "_id": {
             "gte": range[0],
             "lte": range[1]
           }
@@ -33,7 +33,7 @@ Meteor.methods({
 
     var searchData = {
       "size": size,
-      "sort": [{"index": {"order": "asc"}}],
+      "sort": [{"timestamp": {"order": "asc"}}],
       "query": {
         "filtered": {
           "filter": {
@@ -60,7 +60,7 @@ Meteor.methods({
   loadEventsByIDs: function(index, ids, size) {
     var searchData = {
       "size": size,
-      "sort": [{"index": {"order": "asc"}}],
+      "sort": [{"timestamp": {"order": "asc"}}],
       "query": {
         "ids" : {
           "values" : ids
@@ -78,7 +78,7 @@ Meteor.methods({
 
     searchData = {
       "size": sourceBounds.length,
-      "sort": [{"index": {"order": "asc"}}],
+      "sort": [{"timestamp": {"order": "asc"}}],
       "query": {
         "ids" : {
           "values" : _.pluck(sourceBounds, 'index')
@@ -128,7 +128,7 @@ Meteor.methods({
       var cutoff = eval(sourceBoundsTimestamps[i] + operator + distanceValue);
       searchData = {
         "size": 1,
-        "sort": [{"index": {"order": order}}],
+        "sort": [{"timestamp": {"order": order}}],
         "query": {
           "filtered": {
             "filter": {
@@ -146,7 +146,7 @@ Meteor.methods({
         temporalBounds.push(
           _.extend(
             sourceBounds[i],
-            {"temporalBound": response.data.hits.hits[0]._source.index}
+            {"temporalBound": response.data.hits.hits[0]['_id']}
           )
         );
       }

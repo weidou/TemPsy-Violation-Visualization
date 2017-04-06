@@ -511,12 +511,13 @@ angular.module("violationreporting").controller("ReportCtrl", ['$scope', '$state
       .then(
         function(data) {
           var previousTimestamp = data[0]['_source'].timestamp;
-          var previousIndex = data[0]['_source'].index;
+          var previousIndex = parseInt(data[0]['_id']);
           var tempData = [];
           $scope.hiderelevantLegend = true;
           $scope.hideIrrelevantLegend = true;
           _.each(data, function(o) {
             x = o['_source'];
+            x.index = parseInt(o['_id']);
             switch ($scope.patternType) {
               case "universality":
               case "absence":
@@ -762,7 +763,7 @@ angular.module("violationreporting").controller("ReportCtrl", ['$scope', '$state
       $scope.switchActiveLink(segment.globalStartIndex + $index - ($scope.page - 1) * $scope.perPage);
       // get highlighted events
       var violationType;
-      if(_.hasOwnProperty(segment, 'violationType')) {
+      if(_.has(segment, 'violationType')) {
         violationType = segment.violationType;
       } else {
         violationType = segment.violations[$index].type;
