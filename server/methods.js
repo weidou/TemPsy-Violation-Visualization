@@ -130,12 +130,14 @@ Meteor.methods({
         "size": 1,
         "sort": [{"timestamp": {"order": order}}],
         "query": {
-          "filtered": {
-            "filter": {
+          "bool": {
+            "must": {
               "script": {
-                "script": "doc[\"timestamp\"].value " + comparison + " cutoff",
-                "params" : {"cutoff" : cutoff},
-                "_cache": true
+                "script": {
+                  "inline" : "doc[\"timestamp\"].value " + comparison + " params.cutoff",
+                  "lang" : "painless",
+                  "params" : {"cutoff" : cutoff}
+                }
               }
             }
           }
