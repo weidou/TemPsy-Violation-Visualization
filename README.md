@@ -1,5 +1,6 @@
 # TemPsy-Violation-Visualization
 Public website for TemPsy-Violation-Visualization
 
-Requirement:
-* https://www.meteor.com/
+Requirements:
+* [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+* (Meter](https://www.meteor.com/)
